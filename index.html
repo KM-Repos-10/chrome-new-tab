@@ -191,7 +191,10 @@
 <body>
   <main class="dashboard">
     <div id="clock">00:00:00</div>
+    <input placeholder="Search Google..." id="search" onkeydown="searching(event)">
+    
     <hr>
+    
 
     <div class="links">
       <button class="link-button" onclick="gotoLink('https://www.google.com')">
@@ -337,6 +340,14 @@
       addLinkButton.setAttribute('aria-expanded', 'false');
       document.getElementById('link-error').textContent = '';
     });
+    function searching(event){
+      if (event.key === "Enter"){
+    const searchel = document.getElementById("search");
+    const the_search = searchel.textContent;
+    
+    window.open(`https://google.com{encodeURIComponent(the_search)}`, '_blank');
+      }
+    }
     renderSavedLinks();
     setInterval(updateClock, 1000);
     updateClock();
