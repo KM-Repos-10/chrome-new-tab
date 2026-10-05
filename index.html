@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,11 +31,28 @@
       border-radius: 8px;
       background:
         linear-gradient(#121212, #121212) padding-box,
-        linear-gradient(120deg, #3aa7ff, #25e6c8 52%, #b34dff) border-box;
+        linear-gradient(120deg, #d4af37, #f4e8c1 48%, #c0c0c0 72%, #d4af37) border-box;
       box-shadow:
-        0 0 12px rgba(58, 167, 255, 0.35),
-        0 0 18px rgba(37, 230, 200, 0.2),
-        inset 0 0 12px rgba(58, 167, 255, 0.08);
+        0 0 12px rgba(212, 175, 55, 0.3),
+        0 0 18px rgba(192, 192, 192, 0.2),
+        inset 0 0 12px rgba(212, 175, 55, 0.08);
+    }
+
+    .dashboard hr {
+      flex: 0 0 auto;
+      width: min(70%, 520px);
+      height: 1px;
+      margin: 1.5rem 0;
+      border: 0;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        #d4af37 25%,
+        #f4e8c1 50%,
+        #c0c0c0 75%,
+        transparent
+      );
+      box-shadow: 0 0 8px rgba(212, 175, 55, 0.25);
     }
 
     #clock {
@@ -170,6 +188,7 @@
 <body>
   <main class="dashboard">
     <div id="clock">00:00:00</div>
+    <hr>
 
     <div class="links">
       <button class="link-button" onclick="gotoLink('https://www.google.com')">
@@ -206,6 +225,7 @@
         <button class="form-button" type="submit">Save link</button>
       </div>
     </form>
+    <hr>
   </main>
 
   <script>
