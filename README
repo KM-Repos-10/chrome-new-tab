@@ -1,0 +1,6 @@
+Alternative: The Extension Route
+If you don’t want to mess around with folder paths and extensions code, users on platforms like Reddit suggest a simpler alternative:
+1. Host your index.html file online for free using GitHub Pages.
+2. Download a lightweight third-party extension like the Custom New Tab Extension on Chrome Web Store.
+3. Paste your live GitHub link directly into the extension's options menu.
+Would you like me to show you how to integrate a live search bar into your HTML template, or do you need help adding advanced features like a weather widget or task tracker?

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- Crucial: Fill the title tag so you don't see "chrome://newtab" -->
+  <title>Dashboard</title>
+  <style>
+    :root {
+      --link-color: #8ab4f8;
+      --link-hover-color: #c2e7ff;
+    }
+
+    body {
+      background-color: #121212;
+      color: #ffffff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .dashboard {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 12px;
+      border: 2px solid transparent;
+      border-radius: 8px;
+      background:
+        linear-gradient(#121212, #121212) padding-box,
+        linear-gradient(120deg, #3aa7ff, #25e6c8 52%, #b34dff) border-box;
+      box-shadow:
+        0 0 12px rgba(58, 167, 255, 0.35),
+        0 0 18px rgba(37, 230, 200, 0.2),
+        inset 0 0 12px rgba(58, 167, 255, 0.08);
+    }
+
+    #clock {
+      font-size: 5rem;
+      margin-bottom: 2rem;
+      font-weight: 300;
+      letter-spacing: 0.04em;
+    }
+
+    .links {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .link-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 0.5rem;
+      color: var(--link-color);
+      font-size: 1.2rem;
+      cursor: pointer;
+      padding: 0.5rem 0.75rem;
+      transition: color 0.2s ease, opacity 0.2s ease;
+    }
+
+    .link-button:hover {
+      color: var(--link-hover-color);
+    }
+
+    .link-button:focus-visible {
+      border-color: currentColor;
+      outline: none;
+    }
+
+    .link-button img {
+      width: 16px;
+      height: 16px;
+      display: block;
+    }
+
+    #link-form {
+      box-sizing: border-box;
+      display: grid;
+      gap: 1rem;
+      width: min(420px, calc(100% - 2rem));
+      margin-top: 1.5rem;
+      padding: 1.5rem;
+      border: 1px solid #343a40;
+      border-radius: 0.75rem;
+      background: #1e1e1e;
+      box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.35);
+    }
+
+    #link-form[hidden] {
+      display: none;
+    }
+
+    #link-form h2 {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 500;
+    }
+
+    #link-form label {
+      display: grid;
+      gap: 0.4rem;
+      color: #e0e0e0;
+      font-size: 0.95rem;
+      text-align: left;
+    }
+
+    #link-form input {
+      box-sizing: border-box;
+      width: 100%;
+      padding: 0.65rem 0.75rem;
+      border: 1px solid #495057;
+      border-radius: 0.375rem;
+      background: #121212;
+      color: #ffffff;
+      font: inherit;
+    }
+
+    #link-form input:focus {
+      border-color: #86b7fe;
+      outline: 0;
+      box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.5rem;
+    }
+
+    .form-button {
+      border: 1px solid #0d6efd;
+      border-radius: 0.375rem;
+      background: #0d6efd;
+      color: #ffffff;
+      font: inherit;
+      font-size: 0.95rem;
+      cursor: pointer;
+      padding: 0.5rem 0.9rem;
+    }
+
+    .form-button:hover {
+      border-color: #0a58ca;
+      background: #0b5ed7;
+    }
+
+    .form-button-secondary {
+      border-color: #6c757d;
+      background: transparent;
+      color: #dee2e6;
+    }
+
+    .form-button-secondary:hover {
+      border-color: #6c757d;
+      background: #6c757d;
+    }
+
+    #link-form [role="alert"] {
+      color: #ff8a80;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <main class="dashboard">
+    <div id="clock">00:00:00</div>
+
+    <div class="links">
+      <button class="link-button" onclick="gotoLink('https://www.google.com')">
+        <img src="https://www.google.com/s2/favicons?domain=google.com&sz=32" alt="Google favicon">
+        Google
+      </button>
+      <button class="link-button" onclick="gotoLink('https://www.github.com')">
+        <img src="https://www.google.com/s2/favicons?domain=github.com&sz=32" alt="GitHub favicon">
+        GitHub
+      </button>
+      <button class="link-button" onclick="gotoLink('https://www.reddit.com')">
+        <img src="https://www.google.com/s2/favicons?domain=reddit.com&sz=32" alt="Reddit favicon">
+        Reddit
+      </button>
+      <button class="link-button" onclick="gotoLink('https://www.stackoverflow.com')">
+        <img src="https://www.google.com/s2/favicons?domain=stackoverflow.com&sz=32" alt="Stack Overflow favicon">
+        Stack Overflow
+      </button>
+      <button class="link-button" id="add-link-button" type="button" aria-expanded="false" aria-controls="link-form">+ Add link</button>
+    </div>
+    <form id="link-form" hidden>
+      <h2>Add a link</h2>
+      <label>
+        Name
+        <input name="name" type="text" required maxlength="60" autocomplete="off">
+      </label>
+      <label>
+        Website
+        <input name="url" type="text" required placeholder="https://example.com" autocomplete="url">
+      </label>
+      <div id="link-error" role="alert" aria-live="polite"></div>
+      <div class="form-actions">
+        <button class="form-button form-button-secondary" id="cancel-link-button" type="button">Cancel</button>
+        <button class="form-button" type="submit">Save link</button>
+      </div>
+    </form>
+  </main>
+
+  <script>
+    function updateClock() {
+      const now = new Date();
+      document.getElementById('clock').textContent = now.toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+      });
+    }
+
+    function gotoLink(url) {
+      window.open(url, '_blank', 'noopener,noreferrer');
+    }
+
+    function getSavedLinks() {
+      try {
+        const links = JSON.parse(localStorage.getItem('customLinks') || '[]');
+        return Array.isArray(links) ? links : [];
+      } catch (error) {
+        console.error('Could not read saved links:', error);
+        return [];
+      }
+    }
+
+    function renderSavedLinks() {
+      const linksContainer = document.querySelector('.links');
+      linksContainer.querySelectorAll('[data-custom-link]').forEach((button) => button.remove());
+
+      getSavedLinks().forEach(({ name, url }) => {
+        if (typeof name !== 'string' || typeof url !== 'string') return;
+
+        let parsedUrl;
+        try {
+          parsedUrl = new URL(url);
+        } catch (error) {
+          console.error('Skipping invalid saved link URL:', url, error);
+          return;
+        }
+        if (parsedUrl.protocol !== 'https:' && parsedUrl.protocol !== 'http:') return;
+
+        const button = document.createElement('button');
+        button.className = 'link-button';
+        button.type = 'button';
+        button.dataset.customLink = '';
+        button.addEventListener('click', () => gotoLink(parsedUrl.href));
+
+        const favicon = document.createElement('img');
+        favicon.src = `https://www.google.com/s2/favicons?domain=${encodeURIComponent(parsedUrl.hostname)}&sz=32`;
+        favicon.alt = '';
+        button.append(favicon, document.createTextNode(name));
+        linksContainer.insertBefore(button, document.getElementById('add-link-button'));
+      });
+    }
+
+    function addLink(event) {
+      event.preventDefault();
+      const form = document.getElementById('link-form');
+      const name = form.elements.name.value.trim();
+      const enteredUrl = form.elements.url.value.trim();
+      const errorMessage = document.getElementById('link-error');
+      errorMessage.textContent = '';
+
+      let url;
+      try {
+        url = new URL(enteredUrl.includes('://') ? enteredUrl : `https://${enteredUrl}`);
+      } catch {
+        errorMessage.textContent = 'Please enter a valid website address.';
+        return;
+      }
+
+      if (url.protocol !== 'https:' && url.protocol !== 'http:') {
+        errorMessage.textContent = 'Please enter an HTTP or HTTPS website address.';
+        return;
+      }
+
+      const links = getSavedLinks();
+      links.push({ name, url: url.href });
+      try {
+        localStorage.setItem('customLinks', JSON.stringify(links));
+      } catch (error) {
+        console.error('Could not save link:', error);
+        errorMessage.textContent = 'The link could not be saved in this browser.';
+        return;
+      }
+
+      form.reset();
+      form.hidden = true;
+      document.getElementById('add-link-button').setAttribute('aria-expanded', 'false');
+      renderSavedLinks();
+    }
+
+    const linkForm = document.getElementById('link-form');
+    const addLinkButton = document.getElementById('add-link-button');
+    addLinkButton.addEventListener('click', () => {
+      linkForm.hidden = !linkForm.hidden;
+      addLinkButton.setAttribute('aria-expanded', String(!linkForm.hidden));
+      if (!linkForm.hidden) linkForm.elements.name.focus();
+    });
+    linkForm.addEventListener('submit', addLink);
+    document.getElementById('cancel-link-button').addEventListener('click', () => {
+      linkForm.reset();
+      linkForm.hidden = true;
+      addLinkButton.setAttribute('aria-expanded', 'false');
+      document.getElementById('link-error').textContent = '';
+    });
+    renderSavedLinks();
+    setInterval(updateClock, 1000);
+    updateClock();
+  </script>
+</body>
+</html>
