@@ -66,9 +66,13 @@
       </div>
     </form>
     <hr>
-    <button style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;" id="Modes" onclick="changeTheme()">
-  
-</button>
+    <div class="theme-controls">
+      <label for="auto-theme-toggle" class="auto-theme-label">
+        <input type="checkbox" id="auto-theme-toggle" aria-label="Toggle auto theme based on time">
+        <span>Auto theme</span>
+      </label>
+      <button id="Modes" type="button" aria-label="Toggle theme">Set to White mode?</button>
+    </div>
   </main>
 
   <script src="script.js"></script>

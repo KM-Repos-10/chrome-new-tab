@@ -1,10 +1,71 @@
 let theme = "DARK"
+let autoThemeEnabled = false
 
 const elOfbtn = document.getElementById("Modes")
+const autoThemeToggle = document.getElementById("auto-theme-toggle")
 
 function syncThemeButton() {
   if (!elOfbtn) return
   elOfbtn.textContent = theme === "DARK" ? "Set to White mode?" : "Set to Dark Mode?"
+}
+
+function getThemeForTime() {
+  const hour = new Date().getHours()
+  if (hour >= 18 || hour < 7) {
+    return "DARK"
+  } else {
+    return "LIGHT"
+  }
+}
+
+function applyTheme(newTheme) {
+  theme = newTheme
+  document.documentElement.style.filter = theme === 'LIGHT' ? 'invert(1)' : ''
+  syncThemeButton()
+  if (autoThemeEnabled) {
+    localStorage.setItem('themeMode', 'auto')
+  } else {
+    localStorage.setItem('themeMode', theme)
+  }
+}
+
+function updateAutoTheme() {
+  if (autoThemeEnabled) {
+    const currentTheme = getThemeForTime()
+    applyTheme(currentTheme)
+  }
+}
+
+function toggleAutoTheme() {
+  autoThemeEnabled = !autoThemeEnabled
+  if (autoThemeToggle) {
+    autoThemeToggle.checked = autoThemeEnabled
+  }
+  if (autoThemeEnabled) {
+    updateAutoTheme()
+  } else {
+    localStorage.setItem('themeMode', theme)
+  }
+}
+
+function initializeTheme() {
+  const saved = localStorage.getItem('themeMode')
+  if (saved === 'auto') {
+    autoThemeEnabled = true
+    if (autoThemeToggle) {
+      autoThemeToggle.checked = true
+    }
+    updateAutoTheme()
+  } else if (saved === 'LIGHT' || saved === 'DARK') {
+    theme = saved
+    autoThemeEnabled = false
+    if (autoThemeToggle) {
+      autoThemeToggle.checked = false
+    }
+    applyTheme(theme)
+  } else {
+    syncThemeButton()
+  }
 }
 
 function updateClock() {
@@ -217,6 +278,10 @@ document.getElementById('cancel-link-button').addEventListener('click', () => {
   document.getElementById('link-error').textContent = '';
 });
 
+if (autoThemeToggle) {
+  autoThemeToggle.addEventListener('change', toggleAutoTheme);
+}
+
 function searching(event) {
   if (event.key === 'Enter') {
     event.preventDefault();
@@ -230,12 +295,22 @@ function searching(event) {
 }
 
 function changeTheme() {
+  if (autoThemeEnabled) {
+    autoThemeEnabled = false
+    if (autoThemeToggle) {
+      autoThemeToggle.checked = false
+    }
+  }
   theme = theme === 'DARK' ? 'LIGHT' : 'DARK';
-  document.documentElement.style.filter = theme === 'LIGHT' ? 'invert(1)' : '';
-  syncThemeButton();
+  applyTheme(theme)
 }
 
-syncThemeButton();
+initializeTheme();
 renderSavedLinks();
-setInterval(updateClock, 1000);
+setInterval(() => {
+  updateClock();
+  if (autoThemeEnabled) {
+    updateAutoTheme();
+  }
+}, 1000);
 updateClock();
