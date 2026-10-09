@@ -2,9 +2,14 @@
       --link-color: #8ab4f8;
       --link-hover-color: #c2e7ff;
     }
-    html[style*="invert(1)"] img, 
+
+    html[style*="invert(1)"] img,
     html[style*="invert(1)"] video {
       filter: invert(1);
+    }
+
+    * {
+      box-sizing: border-box;
     }
 
     body {
@@ -316,7 +321,7 @@
     .theme-controls {
       display: flex;
       align-items: center;
-      gap: 1.5rem;
+      gap: 1.25rem;
       margin-top: 1.5rem;
     }
 
@@ -337,15 +342,19 @@
     }
 
     #Modes {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 9999;
       background: black;
       border: 1px solid #474141;
       color: white;
       font: inherit;
       font-size: 0.95rem;
       cursor: pointer;
-      transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
       border-radius: 0.375rem;
       padding: 0.5rem 0.9rem;
+      transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
     }
 
     #Modes:hover {
