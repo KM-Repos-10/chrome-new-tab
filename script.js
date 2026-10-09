@@ -1,3 +1,6 @@
+let theme = "DARK"
+
+const elOfbtn = document.getElementById("Modes")
 function updateClock() {
       const now = new Date();
       document.getElementById('clock').textContent = now.toLocaleTimeString([], {
@@ -192,6 +195,35 @@ function updateClock() {
         window.open(searchUrl.href, '_blank', 'noopener,noreferrer');
       }
     }
+
+function changeTheme() {
+    // Toggle the theme value
+    if (theme === "DARK") {
+        theme = "LIGHT";
+    } else {
+        theme = "DARK";
+    }
+
+   
+    if (theme === "DARK") {
+        elOfbtn.innerText = "Set to White mode?";
+
+    } else {
+        elOfbtn.innerText = "Set to Dark Mode?";
+
+    }
+    //actully make changes depending on the theme
+
+    if (theme === "LIGHT") {
+      document.documentElement.style.filter = "invert(1)";
+
+    }
+    
+}
+
+
+
+    
 
     renderSavedLinks();
     setInterval(updateClock, 1000);
