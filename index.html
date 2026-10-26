@@ -34,9 +34,12 @@
           type="text" 
           id="search-input" 
           placeholder="Search Google..." 
-          onkeydown="searching(event)"
+         
           autocomplete="off"
         />
+        <button type="button" id="image-search-button" class="image-search-btn" title="Search by image (paste, drop, or choose a file)" aria-label="Search by image">📷</button>
+        <input type="file" id="image-file-input" accept="image/*" hidden />
+        <div id="search-hint" class="search-hint" role="status"></div>
       </div>
 
       <!-- Quick Links Row -->

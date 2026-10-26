@@ -337,17 +337,148 @@ document.getElementById('cancel-link-button').addEventListener('click', () => {
   document.getElementById('link-error').textContent = '';
 });
 
+// Image search via Google Lens
+const searchContainer = document.querySelector('.search-container');
+const searchInput = document.getElementById('search-input');
+const imageSearchButton = document.getElementById('image-search-button');
+const imageFileInput = document.getElementById('image-file-input');
+const searchHint = document.getElementById('search-hint');
+let hintTimer;
+
+function showSearchHint(message) {
+  searchHint.textContent = message;
+  clearTimeout(hintTimer);
+  hintTimer = setTimeout(() => { searchHint.textContent = ''; }, 6000);
+}
+
+function isImageUrl(text) {
+  let url;
+  try {
+    url = new URL(text);
+  } catch {
+    return false;
+  }
+  return (url.protocol === 'http:' || url.protocol === 'https:') &&
+    /\.(png|jpe?g|gif|webp|bmp|avif|svg)$/i.test(url.pathname);
+}
+
+function lensUrlFor(imageUrl) {
+  const lens = new URL('https://lens.google.com/uploadbyurl');
+  lens.searchParams.set('url', imageUrl);
+  return lens.href;
+}
+
+// Re-encode as PNG: the async clipboard only reliably accepts image/png
+function toPngBlob(file) {
+  return new Promise((resolve, reject) => {
+    const objectUrl = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      canvas.getContext('2d').drawImage(img, 0, 0);
+      URL.revokeObjectURL(objectUrl);
+      canvas.toBlob((blob) => (blob ? resolve(blob) : reject(new Error('Could not encode image'))), 'image/png');
+    };
+    img.onerror = () => {
+      URL.revokeObjectURL(objectUrl);
+      reject(new Error('Could not read image'));
+    };
+    img.src = objectUrl;
+  });
+}
+
+// Google has no public upload endpoint, so copy the image and open Lens, which accepts a paste
+async function searchWithImageFile(file) {
+  if (!file || !file.type.startsWith('image/')) {
+    showSearchHint('That file is not an image.');
+    return;
+  }
+  const isMac = /Mac|iPhone|iPad/.test(navigator.platform);
+  const pasteKey = isMac ? '⌘V' : 'Ctrl+V';
+  try {
+    const blob = await toPngBlob(file);
+    await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+    showSearchHint(`Image copied. Press ${pasteKey} on the Google Lens page.`);
+  } catch (error) {
+    console.error('Could not copy image to clipboard:', error);
+    showSearchHint('Drop your image onto the Google Lens page.');
+  }
+  window.open('https://lens.google.com/', '_blank', 'noopener,noreferrer');
+}
+
 function searching(event) {
   if (event.key === 'Enter') {
     event.preventDefault();
     const query = event.currentTarget.value.trim();
     if (!query) return;
 
+    if (isImageUrl(query)) {
+      window.location.href = lensUrlFor(query);
+      return;
+    }
+
     const searchUrl = new URL('https://www.google.com/search');
     searchUrl.searchParams.set('q', query);
     window.location.href = searchUrl.href;
   }
 }
+
+searchInput.addEventListener('keydown', searching);
+
+imageSearchButton.addEventListener('click', () => {
+  const text = searchInput.value.trim();
+  if (isImageUrl(text)) {
+    window.location.href = lensUrlFor(text);
+  } else {
+    imageFileInput.click();
+  }
+});
+
+imageFileInput.addEventListener('change', () => {
+  const [file] = imageFileInput.files;
+  imageFileInput.value = '';
+  searchWithImageFile(file);
+});
+
+// Paste: image data goes to Lens, an image URL is searched directly
+document.addEventListener('paste', (event) => {
+  const items = Array.from(event.clipboardData?.items || []);
+  const imageItem = items.find((item) => item.type.startsWith('image/'));
+  if (imageItem) {
+    event.preventDefault();
+    searchWithImageFile(imageItem.getAsFile());
+    return;
+  }
+  const text = (event.clipboardData?.getData('text') || '').trim();
+  if (document.activeElement === searchInput && isImageUrl(text)) {
+    event.preventDefault();
+    window.location.href = lensUrlFor(text);
+  }
+});
+
+['dragenter', 'dragover'].forEach((type) => {
+  document.addEventListener(type, (event) => {
+    if (!event.dataTransfer?.types.includes('Files')) return;
+    event.preventDefault();
+    searchContainer.classList.add('drag-over');
+  });
+});
+
+['dragleave', 'drop'].forEach((type) => {
+  document.addEventListener(type, (event) => {
+    if (type === 'dragleave' && event.relatedTarget) return;
+    searchContainer.classList.remove('drag-over');
+  });
+});
+
+document.addEventListener('drop', (event) => {
+  const [file] = event.dataTransfer?.files || [];
+  if (!file) return;
+  event.preventDefault();
+  searchWithImageFile(file);
+});
 
 function changeTheme() {
   if (theme === 'DARK') {
