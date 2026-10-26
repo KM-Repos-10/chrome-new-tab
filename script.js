@@ -1,22 +1,95 @@
-let theme = "DARK"
+let theme = "DARK";
 
-const elOfbtn = document.getElementById("Modes")
+const elOfbtn = document.getElementById("Modes");
+const autoThemeToggle = document.getElementById("auto-theme-toggle");
 
+// Sync Theme Button text
 function syncThemeButton() {
-  if (!elOfbtn) return
-  elOfbtn.textContent = theme === "DARK" ? "Set to Light mode?" : "Set to Dark Mode?"
+  if (!elOfbtn) return;
+  elOfbtn.textContent = theme === "DARK" ? "Set to Light mode?" : "Set to Dark Mode?";
 }
 
+// System Auto-Theme handling
+function applyAutoTheme(isDark) {
+  theme = isDark ? "DARK" : "LIGHT";
+  document.documentElement.style.filter = theme === "LIGHT" ? "invert(1)" : "";
+  syncThemeButton();
+}
+
+if (autoThemeToggle) {
+  const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)");
+
+  autoThemeToggle.addEventListener("change", (e) => {
+    if (e.target.checked) {
+      applyAutoTheme(systemPrefersDark.matches);
+    }
+  });
+
+  systemPrefersDark.addEventListener("change", (e) => {
+    if (autoThemeToggle.checked) {
+      applyAutoTheme(e.matches);
+    }
+  });
+}
+
+// Update Clock & Date
 function updateClock() {
   const now = new Date();
+  
+  // Clock
   document.getElementById('clock').textContent = now.toLocaleTimeString([], {
     hour: '2-digit',
     minute: '2-digit',
     second: '2-digit',
     hour12: false
   });
+
+  // Date
+  const options = { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' };
+  document.getElementById('date-display').textContent = now.toLocaleDateString('en-US', options);
 }
 
+// Fetch Weather via Open-Meteo
+async function fetchWeather() {
+  const iconEl = document.getElementById('weather-icon');
+  const tempEl = document.getElementById('weather-temp');
+  const descEl = document.getElementById('weather-desc');
+
+  if (!navigator.geolocation) {
+    descEl.textContent = 'Geolocation not supported';
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    async (position) => {
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+      try {
+        const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
+        const data = await res.json();
+        if (data.current_weather) {
+          const temp = Math.round(data.current_weather.temperature);
+          const code = data.current_weather.weathercode;
+          tempEl.textContent = `${temp}°C`;
+          
+          // Weather Code Interpretations
+          if (code === 0) { iconEl.textContent = '☀️'; descEl.textContent = 'Clear sky'; }
+          else if (code <= 3) { iconEl.textContent = 'Partly cloudy'; descEl.textContent = 'Partly cloudy'; }
+          else if (code <= 67) { iconEl.textContent = '🌧️'; descEl.textContent = 'Rain'; }
+          else if (code <= 77) { iconEl.textContent = '❄️'; descEl.textContent = 'Snow'; }
+          else { iconEl.textContent = '⛈️'; descEl.textContent = 'Thunderstorm'; }
+        }
+      } catch {
+        descEl.textContent = 'Weather unavailable';
+      }
+    },
+    () => {
+      descEl.textContent = 'Location access denied';
+    }
+  );
+}
+
+// Link Navigation & Management
 function gotoLink(url) {
   window.open(url, '_blank', 'noopener,noreferrer');
 }
@@ -32,14 +105,12 @@ function getSavedLinks() {
 
     return validLinks
       .filter((link) => link && typeof link === 'object')
-      .map((link) => (
-        {
-          ...link,
-          id: typeof link.id === 'string' && link.id ? link.id : createLinkId(),
-          name: typeof link.name === 'string' ? link.name : '',
-          url: typeof link.url === 'string' ? link.url : ''
-        }
-      ))
+      .map((link) => ({
+        ...link,
+        id: typeof link.id === 'string' && link.id ? link.id : createLinkId(),
+        name: typeof link.name === 'string' ? link.name : '',
+        url: typeof link.url === 'string' ? link.url : ''
+      }))
       .filter((link) => link.name && link.url);
   } catch (error) {
     console.error('Could not read saved links:', error);
@@ -101,7 +172,7 @@ function populateDeleteModal() {
 
   const links = getSavedLinks();
   if (links.length === 0) {
-    deleteList.innerHTML = '<p style="color: #999;">No custom links to delete</p>';
+    deleteList.innerHTML = '<p style="color: #999; font-size:0.85rem;">No custom links to delete</p>';
     return;
   }
 
@@ -111,7 +182,7 @@ function populateDeleteModal() {
     let parsedUrl;
     try {
       parsedUrl = new URL(url);
-    } catch (error) {
+    } catch {
       return;
     }
     if (parsedUrl.protocol !== 'https:' && parsedUrl.protocol !== 'http:') return;
@@ -182,6 +253,7 @@ function addLink(event) {
   renderSavedLinks();
 }
 
+// Event Listeners Initialization
 const linkForm = document.getElementById('link-form');
 const addLinkButton = document.getElementById('add-link-button');
 const deleteLinksButton = document.getElementById('delete-links-button');
@@ -240,7 +312,9 @@ function changeTheme() {
   syncThemeButton();
 }
 
+// Initial Run
 syncThemeButton();
 renderSavedLinks();
+fetchWeather();
 setInterval(updateClock, 1000);
 updateClock();
