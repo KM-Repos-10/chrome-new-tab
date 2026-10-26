@@ -3,6 +3,11 @@
   "version": "1.0",
   "manifest_version": 3,
   "description": "Replaces the default new tab page with a custom HTML dashboard.",
+  "icons": {
+    "16": "favicon-96x96.png",
+    "48": "favicon-96x96.png",
+    "128": "web-app-manifest-192x192.png"
+  },
   "chrome_url_overrides": {
     "newtab": "index.html"
   }

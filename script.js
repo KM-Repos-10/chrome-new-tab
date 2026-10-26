@@ -66,6 +66,7 @@ async function fetchWeather() {
       const lon = position.coords.longitude;
       try {
         const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
+        if (!res.ok) throw new Error(`Weather request failed: ${res.status}`);
         const data = await res.json();
         if (data.current_weather) {
           const temp = Math.round(data.current_weather.temperature);
@@ -74,9 +75,10 @@ async function fetchWeather() {
           
           // Weather Code Interpretations
           if (code === 0) { iconEl.textContent = '☀️'; descEl.textContent = 'Clear sky'; }
-          else if (code <= 3) { iconEl.textContent = 'Partly cloudy'; descEl.textContent = 'Partly cloudy'; }
-          else if (code <= 67) { iconEl.textContent = '🌧️'; descEl.textContent = 'Rain'; }
-          else if (code <= 77) { iconEl.textContent = '❄️'; descEl.textContent = 'Snow'; }
+          else if (code <= 3) { iconEl.textContent = '⛅'; descEl.textContent = 'Partly cloudy'; }
+          else if (code <= 48) { iconEl.textContent = '🌫️'; descEl.textContent = 'Fog'; }
+          else if (code <= 67 || (code >= 80 && code <= 82)) { iconEl.textContent = '🌧️'; descEl.textContent = 'Rain'; }
+          else if (code <= 77 || code === 85 || code === 86) { iconEl.textContent = '❄️'; descEl.textContent = 'Snow'; }
           else { iconEl.textContent = '⛈️'; descEl.textContent = 'Thunderstorm'; }
         }
       } catch {
@@ -103,7 +105,7 @@ function getSavedLinks() {
     const links = JSON.parse(localStorage.getItem('customLinks') || '[]');
     const validLinks = Array.isArray(links) ? links : [];
 
-    return validLinks
+    const normalized = validLinks
       .filter((link) => link && typeof link === 'object')
       .map((link) => ({
         ...link,
@@ -112,10 +114,20 @@ function getSavedLinks() {
         url: typeof link.url === 'string' ? link.url : ''
       }))
       .filter((link) => link.name && link.url);
+
+    // Persist ids generated for legacy links so they stay stable (needed for delete)
+    if (validLinks.some((link) => !link || typeof link.id !== 'string' || !link.id)) {
+      try { saveLinks(normalized); } catch (error) { console.error('Could not persist link ids:', error); }
+    }
+    return normalized;
   } catch (error) {
     console.error('Could not read saved links:', error);
     return [];
   }
+}
+
+function saveLinks(links) {
+  localStorage.setItem('customLinks', JSON.stringify(links));
 }
 
 function deleteLink(id) {
