@@ -12,6 +12,7 @@
       <stop offset="1" stop-color="#9c7a12"/>
     </linearGradient>
   </defs>
-  <rect x="8" y="8" width="56" height="56" fill="url(#silver)" stroke="#6b6b70" stroke-width="1.5"/>
-  <rect x="36" y="36" width="56" height="56" fill="url(#gold)" stroke="#6b5410" stroke-width="1.5"/>
+  <rect x="3" y="3" width="94" height="94" rx="10" fill="#121212" stroke="#ffffff" stroke-width="6"/>
+  <rect x="18" y="18" width="40" height="40" fill="url(#silver)"/>
+  <rect x="42" y="42" width="40" height="40" fill="url(#gold)"/>
 </svg>

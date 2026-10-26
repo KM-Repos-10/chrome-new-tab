@@ -53,6 +53,8 @@ body {
   padding: 6px 16px;
   border-radius: 20px;
   border: 1px solid rgba(192, 192, 192, 0.15);
+  cursor: pointer;
+  user-select: none;
 }
 
 .weather-desc {
@@ -71,13 +73,14 @@ body {
   font-weight: 300;
   letter-spacing: 2px;
   color: #ffffff;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: Menlo, 'DejaVu Sans Mono', Consolas, monospace;
   text-shadow: 0 0 10px rgba(255,255,255,0.1);
 }
 
 .date-display {
   font-size: 1.05rem;
-  color: #d4af37;
+  color: #ffffff;
+  font-family: Menlo, 'DejaVu Sans Mono', Consolas, monospace;
   letter-spacing: 1px;
   margin-top: 6px;
   font-weight: 400;

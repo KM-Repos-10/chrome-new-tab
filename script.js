@@ -49,6 +49,42 @@ function updateClock() {
   document.getElementById('date-display').textContent = now.toLocaleDateString('en-US', options);
 }
 
+// Weather temperature unit (C/F), persisted and toggled by clicking the widget
+let tempUnit = 'C';
+let lastTempC = null;
+try {
+  if (localStorage.getItem('tempUnit') === 'F') tempUnit = 'F';
+} catch (error) {
+  console.error('Could not read temperature unit:', error);
+}
+
+function renderTemp() {
+  const tempEl = document.getElementById('weather-temp');
+  if (!tempEl || lastTempC === null) return;
+  const value = tempUnit === 'F' ? lastTempC * 9 / 5 + 32 : lastTempC;
+  tempEl.textContent = `${Math.round(value)}°${tempUnit}`;
+}
+
+function toggleTempUnit() {
+  tempUnit = tempUnit === 'C' ? 'F' : 'C';
+  try {
+    localStorage.setItem('tempUnit', tempUnit);
+  } catch (error) {
+    console.error('Could not save temperature unit:', error);
+  }
+  const tempEl = document.getElementById('weather-temp');
+  if (lastTempC === null && tempEl) tempEl.textContent = `--°${tempUnit}`;
+  renderTemp();
+}
+
+const weatherWidget = document.getElementById('weather-widget');
+if (weatherWidget) {
+  weatherWidget.title = 'Click to switch °C / °F';
+  weatherWidget.addEventListener('click', toggleTempUnit);
+}
+const initialTempEl = document.getElementById('weather-temp');
+if (initialTempEl) initialTempEl.textContent = `--°${tempUnit}`;
+
 // Fetch Weather via Open-Meteo
 async function fetchWeather() {
   const iconEl = document.getElementById('weather-icon');
@@ -69,9 +105,9 @@ async function fetchWeather() {
         if (!res.ok) throw new Error(`Weather request failed: ${res.status}`);
         const data = await res.json();
         if (data.current_weather) {
-          const temp = Math.round(data.current_weather.temperature);
           const code = data.current_weather.weathercode;
-          tempEl.textContent = `${temp}°C`;
+          lastTempC = data.current_weather.temperature;
+          renderTemp();
           
           // Weather Code Interpretations
           if (code === 0) { iconEl.textContent = '☀️'; descEl.textContent = 'Clear sky'; }
