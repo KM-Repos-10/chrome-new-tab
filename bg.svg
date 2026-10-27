@@ -12,8 +12,8 @@
     </linearGradient>
   </defs>
   <rect width="1600" height="900" fill="#000"/>
-  <g font-family="Georgia, 'Times New Roman', serif" font-weight="700" font-size="860" text-anchor="middle" opacity="0.32">
-    <text x="330" y="690" fill="url(#gold)">G</text>
-    <text x="1270" y="690" fill="url(#silver)">S</text>
+  <g font-family="Menlo, 'DejaVu Sans Mono', Consolas, monospace" font-weight="700" font-size="280" text-anchor="middle" opacity="0.35">
+    <text x="260" y="520" fill="url(#gold)">G</text>
+    <text x="1340" y="520" fill="url(#silver)">S</text>
   </g>
 </svg>
