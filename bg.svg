@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffe27a"/>
+      <stop offset="0.5" stop-color="#d4af37"/>
+      <stop offset="1" stop-color="#9c7a12"/>
+    </linearGradient>
+    <linearGradient id="silver" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f5f5f7"/>
+      <stop offset="0.5" stop-color="#c0c0c0"/>
+      <stop offset="1" stop-color="#8e8e93"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="#000"/>
+  <g font-family="Georgia, 'Times New Roman', serif" font-weight="700" font-size="860" text-anchor="middle" opacity="0.32">
+    <text x="330" y="690" fill="url(#gold)">G</text>
+    <text x="1270" y="690" fill="url(#silver)">S</text>
+  </g>
+</svg>
