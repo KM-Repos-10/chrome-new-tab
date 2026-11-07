@@ -1,18 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
-  <title>New Tab</title>
+  <title>GS</title>
   <defs>
-    <linearGradient id="silver" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#f5f5f7"/>
-      <stop offset="0.5" stop-color="#c0c0c0"/>
-      <stop offset="1" stop-color="#8e8e93"/>
-    </linearGradient>
     <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#ffe27a"/>
       <stop offset="0.5" stop-color="#d4af37"/>
       <stop offset="1" stop-color="#9c7a12"/>
     </linearGradient>
+    <linearGradient id="silver" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f5f5f7"/>
+      <stop offset="0.5" stop-color="#c0c0c0"/>
+      <stop offset="1" stop-color="#8e8e93"/>
+    </linearGradient>
   </defs>
-  <rect x="3" y="3" width="94" height="94" rx="10" fill="#121212" stroke="#ffffff" stroke-width="6"/>
-  <rect x="18" y="18" width="40" height="40" fill="url(#silver)"/>
-  <rect x="42" y="42" width="40" height="40" fill="url(#gold)"/>
+  <path fill="url(#gold)" d="M36.81 70.67V58.28H28.03V47.50H48.03V77.23Q44.33 80.40 39.88 82.03Q35.42 83.66 30.34 83.66Q17.73 83.66 10.87 74.90Q4.00 66.15 4.00 50.02Q4.00 33.64 10.93 24.99Q17.86 16.34 30.95 16.34Q34.86 16.34 38.64 17.45Q42.42 18.56 45.72 20.64V34.85Q43.03 31.38 39.53 29.62Q36.03 27.86 31.86 27.86Q24.56 27.86 20.95 33.35Q17.34 38.85 17.34 50.02Q17.34 60.84 20.82 66.49Q24.30 72.14 30.95 72.14Q32.94 72.14 34.42 71.77Q35.90 71.40 36.81 70.67Z"/>
+  <path fill="url(#silver)" d="M69.92 53.93Q60.23 50.24 56.80 46.18Q53.37 42.11 53.37 35.25Q53.37 26.42 59.02 21.38Q64.67 16.34 74.53 16.34Q79.01 16.34 83.48 17.36Q87.96 18.38 92.35 20.38V32.90Q88.22 29.99 83.96 28.47Q79.70 26.94 75.53 26.94Q70.88 26.94 68.40 28.81Q65.93 30.68 65.93 34.16Q65.93 36.85 67.73 38.61Q69.53 40.37 75.27 42.50L80.79 44.59Q88.61 47.46 92.31 52.19Q96.00 56.93 96.00 64.15Q96.00 73.97 90.20 78.81Q84.40 83.66 72.66 83.66Q67.84 83.66 62.99 82.51Q58.15 81.36 53.63 79.10V65.84Q58.75 69.49 63.56 71.27Q68.36 73.06 73.05 73.06Q77.79 73.06 80.40 70.90Q83.01 68.75 83.01 64.89Q83.01 61.97 81.27 59.78Q79.53 57.58 76.23 56.32Z"/>
 </svg>
