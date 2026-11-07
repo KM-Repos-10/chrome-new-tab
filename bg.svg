@@ -13,7 +13,7 @@
   </defs>
   <rect width="1600" height="900" fill="#000"/>
   <g opacity="0.3">
-    <rect x="150" y="320" width="240" height="240" fill="url(#silver)"/>
-    <rect x="1210" y="320" width="240" height="240" fill="url(#gold)"/>
+    <rect x="515" y="165" width="420" height="420" fill="url(#silver)"/>
+    <rect x="665" y="315" width="420" height="420" fill="url(#gold)"/>
   </g>
 </svg>
