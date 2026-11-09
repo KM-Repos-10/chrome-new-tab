@@ -220,7 +220,10 @@ function populateDeleteModal() {
 
   const links = getSavedLinks();
   if (links.length === 0) {
-    deleteList.innerHTML = '<p style="color: #999; font-size:0.85rem;">No custom links to delete</p>';
+    const empty = document.createElement('p');
+    empty.className = 'delete-empty';
+    empty.textContent = 'No custom links to delete';
+    deleteList.append(empty);
     return;
   }
 
@@ -490,6 +493,12 @@ function changeTheme() {
   document.documentElement.style.filter = theme === 'LIGHT' ? 'invert(1)' : '';
   syncThemeButton();
 }
+
+// Built-in link buttons and the theme toggle (inline handlers are blocked by the CSP)
+document.querySelectorAll('.link-button[data-url]').forEach((button) => {
+  button.addEventListener('click', () => gotoLink(button.dataset.url));
+});
+if (elOfbtn) elOfbtn.addEventListener('click', changeTheme);
 
 // Initial Run
 syncThemeButton();

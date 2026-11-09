@@ -487,3 +487,8 @@ body {
   height: 18px;
   filter: drop-shadow(0 0 4px rgba(127, 220, 255, 0.7));
 }
+
+.delete-empty {
+  color: #999999;
+  font-size: 0.85rem;
+}

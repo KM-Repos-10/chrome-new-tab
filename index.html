@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>New Tab</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: https://www.google.com https://*.gstatic.com; connect-src https://api.open-meteo.com; object-src 'none'; base-uri 'none'; form-action 'none'" />
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png" />
   <link rel="shortcut icon" href="favicon.ico" />
@@ -60,19 +61,19 @@
       <!-- Quick Links Row -->
       <div class="links-wrapper">
         <div class="links">
-          <button type="button" class="link-button" onclick="gotoLink('https://www.google.com')">
+          <button type="button" class="link-button" data-url="https://www.google.com">
             <img src="https://www.google.com/s2/favicons?domain=google.com&sz=32" alt="" />
             Google
           </button>
-          <button type="button" class="link-button" onclick="gotoLink('https://github.com')">
+          <button type="button" class="link-button" data-url="https://github.com">
             <img src="https://www.google.com/s2/favicons?domain=github.com&sz=32" alt="" />
             GitHub
           </button>
-          <button type="button" class="link-button" onclick="gotoLink('https://reddit.com')">
+          <button type="button" class="link-button" data-url="https://reddit.com">
             <img src="https://www.google.com/s2/favicons?domain=reddit.com&sz=32" alt="" />
             Reddit
           </button>
-          <button type="button" class="link-button" onclick="gotoLink('https://stackoverflow.com')">
+          <button type="button" class="link-button" data-url="https://stackoverflow.com">
             <img src="https://www.google.com/s2/favicons?domain=stackoverflow.com&sz=32" alt="" />
             Stack Overflow
           </button>
@@ -108,7 +109,7 @@
         <span class="auto-theme-label">Auto theme</span>
       </label>
 
-      <button type="button" id="Modes" class="theme-btn" onclick="changeTheme()">
+      <button type="button" id="Modes" class="theme-btn">
         Set to Light mode?
       </button>
     </div>
