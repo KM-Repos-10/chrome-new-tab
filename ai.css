@@ -172,3 +172,44 @@
   opacity: 0.5;
   cursor: default;
 }
+
+/* Cloud / Private mode switch */
+.mode-toggle {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.mode-btn {
+  border: 2px solid transparent;
+  border-radius: 16px;
+  padding: 4px 14px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  color: #888888;
+  background:
+    linear-gradient(#000000, #000000) padding-box,
+    linear-gradient(90deg, #5a4a1a, #55555a) border-box;
+}
+
+.mode-btn.active {
+  color: #f5f5f7;
+  font-weight: 700;
+  background:
+    linear-gradient(#000000, #000000) padding-box,
+    linear-gradient(90deg, #d4af37, #c0c0c0) border-box;
+}
+
+/* Trust notes under replies that used linked pages */
+.chat-note {
+  align-self: flex-start;
+  max-width: 85%;
+  margin-top: -6px;
+  padding: 0 6px;
+  font-size: 0.75rem;
+  color: #888888;
+}
+
+.chat-note.warn {
+  color: #d4af37;
+}
