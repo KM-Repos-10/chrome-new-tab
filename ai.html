@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Chat</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="ai.css" />
+</head>
+<body>
+  <div class="frame-border ai-frame">
+    <a href="index.html" class="ai-back" aria-label="Back to new tab">&larr; Back</a>
+
+    <div class="ai-header">
+      <svg class="ai-spark ai-spark-lg" viewBox="0 0 24 24" aria-hidden="true">
+        <defs>
+          <linearGradient id="diamond-blue" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#e6fbff"/>
+            <stop offset="0.5" stop-color="#7fdcff"/>
+            <stop offset="1" stop-color="#2aa8e8"/>
+          </linearGradient>
+        </defs>
+        <path fill="url(#diamond-blue)" d="M12 1.5c.6 5.6 4.9 9.9 10.5 10.5-5.6.6-9.9 4.9-10.5 10.5C11.4 16.9 7.1 12.6 1.5 12 7.1 11.4 11.4 7.1 12 1.5z"/>
+      </svg>
+      <h1>AI</h1>
+    </div>
+
+    <div class="ai-account">
+      <span id="account-status" class="account-status">Guest mode</span>
+      <button type="button" id="sign-in-button" class="account-btn">Sign in</button>
+    </div>
+
+    <div id="chat-log" class="chat-log" aria-live="polite">
+      <p class="chat-empty">Ask anything. Powered by Puter.js.</p>
+    </div>
+
+    <form id="chat-form" class="chat-form" autocomplete="off">
+      <input type="text" id="chat-input" placeholder="Message AI..." required />
+      <button type="submit" id="chat-send" class="chat-send">Send</button>
+    </form>
+  </div>
+
+  <script src="https://js.puter.com/v2/"></script>
+  <script src="ai.js"></script>
+</body>
+</html>

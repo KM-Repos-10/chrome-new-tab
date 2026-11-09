@@ -450,3 +450,40 @@ body {
   font-size: 0.75rem;
   cursor: pointer;
 }
+
+
+/* AI button (gold-to-silver outline, diamond-blue spark) */
+.ai-button {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border: 2px solid transparent;
+  border-radius: 20px;
+  background:
+    linear-gradient(#000000, #000000) padding-box,
+    linear-gradient(90deg, #d4af37, #c0c0c0) border-box;
+  color: #f5f5f7;
+  font-family: Menlo, 'DejaVu Sans Mono', Consolas, monospace;
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  text-decoration: none;
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+  transition: box-shadow 0.2s, transform 0.2s;
+  z-index: 10;
+}
+
+.ai-button:hover {
+  box-shadow: 0 0 16px rgba(127, 220, 255, 0.45);
+  transform: translateY(-1px);
+}
+
+.ai-spark {
+  width: 18px;
+  height: 18px;
+  filter: drop-shadow(0 0 4px rgba(127, 220, 255, 0.7));
+}
